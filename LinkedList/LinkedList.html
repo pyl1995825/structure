@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>LinkedList</title>
+	<script type="text/javascript">
+		// Node类 
+		/*
+		* element  --> 保存节点上的数据
+		* next  ----> 用来保存指向下一个节点的的链接
+		*/
+		function Node(element) {
+			this.element = element;
+			this.next = null;
+		}
+
+		function LList() {
+			this.head = new Node('head');
+			this.find = find;
+			this.insert = insert;
+			this.remove = remove;
+			this.display = display
+		}
+
+		// 在链表中进行移动，如果当前节点的element属性和我们要找的信息不符，就从当前节点移动到下一个节点
+		function find(item) {
+			var currNode = this.head;
+			while(currNode.element != item) {
+				currNode = currNode.next;
+			}
+			return currNode;
+		}
+
+		function insert(newElement, item) {
+			var newNode = new Node(newElement);
+			var current = this.find(newNode);
+			newNode.next = current.next;
+			current.next = newNode;
+		}
+
+		function display() {
+			var currNode = this.head;
+			while(!(currNode.next == null)) {
+				console.log(currNode.next.element);
+				currNode = currNode.next;
+			};
+		}
+
+		function findPrevious(item) {
+			var currNode = this.head;
+			while(!(current.next == null) && (currNode.next.element != item)) {
+				currNode = currNode.next;
+			}
+			return currNode;
+		}
+
+		function remove(item) {
+			var preNode = findPrevious(item);
+			if(!(preNode.next == null)) {
+				preNode.next = preNde.next.next;
+			}
+		} 
+
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
