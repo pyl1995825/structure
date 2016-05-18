@@ -74,7 +74,7 @@ js实现链表的<strong>初始化</strong>时，使用的是头插法<br/>
 
 ##栈
 
-####栈的结构定义
+#####栈的结构定义
 
 	typedef int SElemType;					function Stack() {
 	typedef struct {				js			this.dataStore = [];
@@ -186,7 +186,7 @@ js实现链表的<strong>初始化</strong>时，使用的是头插法<br/>
 	
 ##队列
 
-###循环队列
+#####循环队列
 > 队列存在两种指针，front指针指向对头元素，rear指针指向队尾元素的下一个位置，当front==rear时，此队列不是还剩一个元素，而是空队列<br/><br>
 > 假溢出：假设有长度为5的数组，入队4个元素，出队2个，front指向2位置，rear指向4的位置，此时在入队一个元素，front指针不变，数组末尾元素已经占用，rear向后移一个单位，造成'假溢出'
 
@@ -224,10 +224,29 @@ js实现链表的<strong>初始化</strong>时，使用的是头插法<br/>
 		Q->front = (Q->front + 1) % MAXSIZE;
 	}
 
-###链式队列
+#####链式队列
 由于链式结构的特殊性，不用考虑队列是否满，因为链表没有固定大小，循环队列用的是线性表，使用数组必须要设置大小
 
 	// 入队
 	Status EnQueue(LinkQueue *Q, QElemType e) {
 		QueuePtr s = (QueuePtr)malloc(sizeof(QNode));
-		
+		s->data = e;
+		s->next = null;
+		Q->rear->next = s;
+		Q->rear = s;
+	}
+	// 出队
+	Status DeQueue(LinkQueue *Q, QElemType *e) {
+		QueuePtr p;
+		if(Q->front == Q->rear) 
+			return -1;
+		p = Q->front->next;
+		*e = p->data;
+		Q->front->next = p->next;
+		if(Q->rear == p) 
+			Q->rear = Q->front;
+		free(p);
+	}
+
+
+##树
