@@ -66,3 +66,255 @@
 ###二叉树的存储结构
 ####顺序存储
 顺序存储：通过用一维数组存储二叉树的结点，并结点的存储位置，也就是数组下标体现结点之间的逻辑关系（一般只用于存完全二叉树）
+####二叉链表
+二叉树每个结点最多有两个孩子，所以设计一个数据域和两个指针域，称这样的链表叫二叉链表
+	
+	typedef struct BiTNode {
+		TElemType data;
+		struct BiTNode *lchild, *rchild;
+	}BiTNode, *BiTree;
+
+###遍历二叉树
+二叉树的遍历是指从根结点出发，按照某种次序依次访问二叉树中所有结点，使得每个结点被访问一次且仅被访问一次<br>
+#####遍历方式：
+>1. 前序遍历：先访问根结点，然后前序遍历左子树，在前序遍历右子树
+>2. 中序遍历：从根结点开始（并不是先访问根结点），中序遍历根结点的左子树，然后访问根结点，最后中序遍历右子树
+>3. 后序遍历：从左到右先叶子后结点遍历左右子树，最后访问根结点
+>4. 层序遍历：从根结点开始访问，从上而下逐层遍历，在同一层中，按从左到右顺序访问
+
+####遍历算法（递归）
+	
+	// 前序遍历算法
+	void PreOrderTraverse(BiTree T) {
+		if(T == null) {
+			return ;
+		}
+		printf("%c", T->data);
+		PreOrderTraverse(T->lchild);
+		PreOrderTraverse(T->rchild);
+	}
+	//中序遍历算法
+	void InOrderTraverse(BiTree T) {
+		if(T == null) {
+			return ;
+		}
+		InOrderTraverse(T->lchild); // 递归找到左子树的叶子
+		printf("%c", T->data);  
+		InOrderTraverse(T->rchild);
+	}
+	//后序遍历
+	void PostOrderTraverse(BiTree T) {
+		if(T == null) {
+			return ;
+		}
+		PostOrderTraverse(T->lchild); // 先后序遍历左子树
+		PostOrderTraverse(T->rchild); // 再后序遍历右子树
+		printf("%c", T->data);
+	}
+
+
+####遍历算法（非递归）
+######结构初始化
+
+	typedef struct seqstack {
+		BiTree data[MAXSIZE];
+		int tag[MAXSIZE];  // 为后续遍历准备
+		int top;	// top为数组下标
+	}seqstack;
+	void push(seqstack *s, bintree t) {
+		if(s->top == MAXSIZE) {
+			return -1;
+		}else {
+			s->top++;
+			s->data[s->top] = t;
+	}
+	void pop(seqstack *s) {
+		if(s->top == -1) 
+			return null;
+		else 
+			s->top--;
+			return s->data[s->top+1];
+	}
+		 
+######非递归前序遍历
+
+	void PreOrder(BiTree t) {
+		seqstack s;
+		s.top = -1;
+		if(!t) return -1;
+		else {
+			while(t || s.top != -1) {
+				while(t) {
+					printf("%c", t->data);
+					push(&s,t);			
+					t = t->lchild;
+				}
+				t = pop(&s);
+				t = t->rchild;
+			}
+		}
+	}	
+######非递归中序遍历
+
+	void InOrder(BiTree t) {
+		seqstack s;
+		s.top = -1;
+		if(!t) return -1;
+		else {
+			while(t || s.top = -1) {
+				while(t) {
+					push(&s, t);
+					t = t->lchild;
+				}
+				t = pop(&s);	
+				printf("%c", t->data);
+				t = t->rchild;
+			}
+		}
+	} 
+######非递归后序遍历
+
+	void PostOrder(BiTree t) {
+		seqstack s;
+		s.top = -1;
+		if(!t) return -1;
+		else {
+			while(t || s.top != -1) {
+				while(t) {
+					push(&s, t);
+					s.tag[s.top] = 0;
+					t = t->lchild;
+				}		
+				if(s.tag[s.top] == 0) {
+					t = s.data[s.top];
+					s.tag[s.top] = 1;
+					t = t->rchild;
+				}else {
+					while(s.tag[s.top] == 1) {
+						t = pop(&s);
+						printf("%c", t->data);
+					}
+					t = null;
+				}
+			}
+		}
+	}
+
+######非递归层次遍历
+层次遍历存储有先进先出，所以选择队列存储。队列定义:
+	
+	#define MAX 1000  
+	typedef struct seqqueue{  
+	    bintree data[MAX];  
+	    int front;  
+	    int rear;  
+	}seqqueue;  
+	  
+	  
+	void enter(seqqueue *q,bintree t){  
+	    if(q->rear == MAX){  
+	        printf("the queue is full!\n");  
+	    }else{  
+	        q->data[q->rear] = t;  
+	        q->rear++;  
+	    }  
+	}  
+	  
+	bintree del(seqqueue *q){  
+	    if(q->front == q->rear){  
+	        return NULL;  
+	    }else{  
+	        q->front++;  
+	        return q->data[q->front-1];  
+	    }  
+	} 
+	
+	void level_tree(bintree t){  
+	    seqqueue q;  
+	    bintree temp;  
+	    q.front = q.rear = 0;  
+	    if(!t){  
+	        printf("the tree is empty\n");  
+	        return ;  
+	    }  
+	    enter(&q,t);  // 放入头结点
+	    while(q.front != q.rear){  
+	        t=del(&q);  
+	        printf("%c ",t->data);  
+	        if(t->lchild){  
+	            enter(&q,t->lchild); // 从左子树开始遍历  
+	        }  
+	        if(t->rchild){  
+	            enter(&q,t->rchild);  // 之后遍历右子树
+	        }  
+	    }  
+	} 
+######统计结点个数
+	
+	int countTree(bintree t) {
+		if(t) {
+			return (countTree(t->lchild) + countTree(t->rchild) + 1);
+		}
+		return 0;
+	}
+
+######求二叉树深度
+	
+	int depth(bintree t) {
+		int h, right,left;
+		if(!t) {
+			return 0;
+		}
+		left = depth(t->lchild);
+		right = depth(t->rchild);
+		h = right > left ? right : left;
+		return h+1;
+	}
+注： <br>
+1. 已知前序遍历序列和中序遍历序列，可以唯一确定一棵二叉树<br>
+2. 已知后序遍历序列和中序遍历序列，可以唯一确定一棵二叉树<br>
+3. 已知前序和后序遍历，不能唯一确定一棵二叉树，无法知道左子树和右子树
+
+
+###二叉树的建立
+
+	void CreateBiTree(BiTree *T) {
+		TElemType ch;
+		scanf("%c", &ch);
+		if(ch == "#") {
+			*T = null;
+		}else {
+			*T = (BiTree)malloc(sizeof(BiTNode));
+			if(!*T) {
+				exit(OVERFLOW);
+				(*T)->data = ch;
+				CreateBiTree(&(*T)->lchild);
+				CreateBiTree(&(*T)->rchild);
+			}
+		}
+	}
+
+###树，森林与二叉树的转换
+#####树转化为二叉树
+1. 加线，在所有兄弟结点之间加一条线
+2. 去线，对数中每个结点，只保留它与第一个孩子结点的连线，删除它与其他孩子结点之间的连线
+3. 层次调整，第一个孩子是二叉树结点的左子树，兄弟转化过来的是右子树
+
+
+#####森林转化为二叉树
+1. 把每个树转化为二叉树
+2. 第一棵二叉树不动，从第二棵二叉树开始，依次把后一棵二叉树的根结点作为前一棵二叉树的根结点的右子树，然后之后的依次连起来
+
+
+#####二叉树转化为树
+1. 加线。
+2. 去线
+3. 调整结构
+
+
+#####二叉树转化为森林
+1. 从根结点开始，若右子树存在，把与右子树结点的连线删除，再查看分离后的二叉树，若右子树存在，则连线删除，知道所有右子树连线都删除为止
+2. 再将每棵树分离后的二叉树转化为树即可
+
+
+###赫夫曼树

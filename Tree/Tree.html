@@ -5,10 +5,16 @@
 	<title>Tree</title>
 	<script type="text/javascript">
 		
-		
+		void PostOrderTraverse(BiTree T) {
+			if(T == null) {
+				return ;
+			}
+			PostOrderTraverse(T->lchild); // 先后序遍历左子树
+			PostOrderTraverse(T->rchild); // 再后序遍历右子树
+			printf("%c", T->data);
+		}
 	</script>
 </head>
 <body>
-	
 </body>
 </html>
