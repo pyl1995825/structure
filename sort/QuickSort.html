@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>QuickSort</title>
+	<script type="text/javascript">
+		
+		function quickSort(arr, left, right) {
+			var dp ;
+			if(left < right) {
+				dp = partition(arr, left, right);
+				quickSort(arr, left, dp - 1);
+				quickSort(arr, dp + 1, right);
+			}
+			return arr;
+		}
+
+		function partition(arr, left, right) {
+			var mid = parseInt((left + right) / 2);
+			if(arr[mid] > arr[right]) {
+				swap(arr, mid, right);
+			}
+			if(arr[mid] > arr[left]) {
+				swap(arr, mid, left);
+			}
+			if(arr[left] > arr[right]) {
+				swap(arr, left, right);
+			}
+			var pivot = arr[left];
+			while(left < right) {
+				while(left < right && arr[right] >= pivot) {
+					right--;
+				}
+				arr[left] = arr[right];
+				while(left < right && arr[left] <= pivot) {
+					left++;
+				}
+				arr[right] = arr[left];
+				arr[left] = pivot;
+			}
+			return left;
+		}
+
+		function swap(arr, x , y) {
+			var tmp;
+			tmp = arr[x];
+			arr[x] = arr[y];
+			arr[y] = tmp;
+		}
+
+		var arr = [50,10,90,30,70,40,80,60,20];
+		var newArr = quickSort(arr, 0, arr.length-1);
+		console.log(newArr);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

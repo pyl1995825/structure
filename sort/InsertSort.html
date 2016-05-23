@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>InsertSort</title>
+	<script type="text/javascript">
+
+		// 设定一个哨兵值，与前面的有序序列进行比较，将其插入到有序序列中
+		function InsertSort(arr) {
+			var target, j
+			for(var i = 1; i < arr.length; i++) {
+				j = i;
+				target = arr[i];
+				while(j > 0 && target < arr[j - 1]) {
+					arr[j] = arr[j - 1];
+					j--; 
+				}
+				arr[j] = target;  // 把最终的结果插入到有序序列中
+			}
+			return arr;
+		}
+		var arr = [1, 9, 2, 5, 8, 3, 7, 4, 6];
+		console.log(InsertSort(arr));
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

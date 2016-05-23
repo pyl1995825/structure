@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HeapSort</title>
+	<script type="text/javascript">
+		
+		var arr = [50,10,90,30,70,40,80,60,20];
+		function HeapSort(arr) {
+			for(var i = parseInt(arr.length/2); i > 0; i--) {
+				HeapAdjust(arr, i, arr.length); 
+			}
+			for(var i = arr.length; i > 1 ; i--) {
+				swap(arr, 1, i);
+				HeapAdjust(arr, 1, i-1);
+			}
+		}
+
+		function HeapAdjust(arr, s, m) {
+			var tmp, j;
+			tmp = arr[s]; // 2
+			for(j = 2 *s; j < m; j*=2) { // 9
+				if(j < m && arr[j] < arr[j+1]) {
+					++j;
+				}
+				if(tmp >= arr[j]) {
+					break;
+				}
+				arr[s] = arr[j];
+				s = j;
+			}
+			arr[s] = tmp;
+		}
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

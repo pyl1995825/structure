@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MergeSort</title>
+	<script type="text/javascript">
+
+		function mergeSort(arr) {
+			sort(arr, 0, arr.length - 1);
+			return arr;
+		}
+		function sort(arr, left, right) {
+			if(left >= right) {
+				return ;
+			}
+			else {
+				var center = parseInt((left + right) / 2);
+				sort(arr, left, center);
+				sort(arr, center + 1, right);
+				merge(arr, left, center, right);
+			}
+		}
+		function merge(arr, left, center, right) {
+			var tmpArr = new Array(arr.length);
+			var mid = center + 1;
+			var third = left;
+			var tmp = left;
+			while(left <= center && mid <= right) {
+				if(arr[left] < arr[mid]) {
+					tmpArr[third++] = arr[left++];
+				}else {
+					tmpArr[third++] = arr[mid++];
+				}
+			} 
+			while(mid <= right) {
+				tmpArr[third++] = arr[mid++];
+			}
+			while(left <= center) {
+				tmpArr[third++] = arr[left++];
+			}
+			
+			for(;tmp <= right; tmp++) {
+				arr[tmp] = tmpArr[tmp];
+			}
+		}
+		
+		function main() {
+			var arr = [5,3,6,2,1,9,4,8,7];
+			console.log(mergeSort(arr));
+		}
+		main();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

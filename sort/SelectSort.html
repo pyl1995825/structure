@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SelectSort</title>
+	<script type="text/javascript">
+		
+		function swap(arr, x, y) {
+			var tmp ;
+			tmp = arr[x];
+			arr[x] = arr[y];
+			arr[y] = tmp;
+		}
+
+		// 通过n-i次关键字间的比较，从n-i+1个记录中选出关键字最小的记录，并和第i个记录进行交换
+		function SelectSort(arr) {
+			for(var i = 1; i < arr.length; i++) {
+				min = i;
+				for(var j = i+1; j < arr.length; j++) {
+					if(arr[min] > arr[j]) { // 当后面的值小于arr[min]，则把下标记录下来
+						min = j;
+					}
+				}
+				if(i != min) {
+					swap(arr, i, min); //  i 与 j进行交换
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

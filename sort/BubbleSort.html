@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Bubble Sort</title>
+	<script type="text/javascript">
+		function swap(arr, x, y) {
+			var  tmp; 
+			tmp = arr[x];
+			arr[x] = arr[y];
+			arr[y] = tmp;
+		}
+
+		function BubbleSort(arr) {
+			for(var i = 0; i < arr.length; i++) {
+				for(var j = arr.length-1; j >= i; j--) {
+					if(arr[j]>arr[j+1]) {
+						swap(arr, j, j+1);
+					}
+				}
+			}
+			return arr;
+		}
+
+		// 改进之后冒泡排序算法
+		function BubbleSort2(arr) {
+			var flag = true;
+			for(var i = 0; i < arr.length && flag; i++) {
+				flag = false;
+				for(var j = arr.length-1; j >= i; j--) {
+					swap(arr, j, j+1);
+					flag = true;
+				}
+			}
+		}
+
+		var arr = [1, 9, 2, 5, 8, 3, 7, 4, 6];
+		var newArr = BubbleSort(arr);
+		console.log(newArr);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
